@@ -10,6 +10,8 @@
 
 #include "OpenDoor.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDoorEvent);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class STEVESADVENTURE_API UOpenDoor : public UActorComponent
 {
@@ -17,19 +19,18 @@ class STEVESADVENTURE_API UOpenDoor : public UActorComponent
 
 private:
 	UPROPERTY(EditAnywhere)
-		float openAngle = -60.0f;
-
-	UPROPERTY(EditAnywhere)
 		float triggerMass = 30.0f;
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* pressurePlate;
 
-	UPROPERTY(EditAnywhere)
-		float doorCloseDelay = 0.4f;
+	UPROPERTY(BlueprintAssignable)
+		FDoorEvent onOpenRequest;
+
+	UPROPERTY(BlueprintAssignable)
+		FDoorEvent onCloseRequest;
 	
 	AActor* owner;
-	float lastDoorOpenTime;
 
 public:	
 	UOpenDoor();
@@ -40,8 +41,6 @@ protected:
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void OpenDoor();
-	void CloseDoor();
 private:
 	float GetTotalMassOfActorOnPlates();
 	

@@ -48,6 +48,7 @@ void UGrabber::Grab()
 	if (actorHit) {
 		if (componentToGrab)
 		{
+			if (!physicsHandle) { return; }
 			physicsHandle->GrabComponentAtLocationWithRotation(
 				componentToGrab, 
 				NAME_None, 
@@ -60,6 +61,7 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
+	if (!physicsHandle) { return; }
 	physicsHandle->ReleaseComponent();
 }
 
